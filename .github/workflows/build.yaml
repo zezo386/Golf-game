@@ -23,10 +23,10 @@ jobs:
           pip install pygame pyinstaller
           
       - name: Build with PyInstaller
-        run: |
-          pyinstaller --name "GolfGame"  --onefile --windowed --noconsole src/main.py
+        run: pyinstaller --name "GolfGame" --onefile --windowed --noconsole src/main.py
+        shell: cmd
           
-      - name: Upload artifact
+      - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: GolfGame-Windows
@@ -50,10 +50,9 @@ jobs:
           pip install pygame pyinstaller
           
       - name: Build with PyInstaller
-        run: |
-          pyinstaller --name "GolfGame" --onefile src/main.py
+        run: pyinstaller --name "GolfGame" --onefile src/main.py
           
-      - name: Upload artifact
+      - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
           name: GolfGame-Linux
@@ -80,6 +79,14 @@ jobs:
           files: |
             GolfGame.exe
             GolfGame
-          body_path: CHANGELOG.md
+          name: Release ${{ github.ref_name }}
+          body: |
+            ## 🎮 Golf Game ${{ github.ref_name }}
+            
+            ### Installation:
+            - **Windows**: Download `GolfGame.exe` and run it
+            - **Linux**: Download `GolfGame` and run `chmod +x GolfGame && ./GolfGame`
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
