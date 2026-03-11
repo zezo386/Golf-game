@@ -16,7 +16,7 @@ python 3.9
 pygame 2.5.2
 
 # Clone the repository
-git clone https://github.com/zezo386/pygame-golf.git
+git clone https://github.com/zezo386/Golf-game.git
 cd pygame-golf
 
 # Install dependencies
@@ -26,4 +26,5 @@ pip install -r requirements.txt
 python src/main.py
 
 # Contributes
+
 Made by Ziad Elhusiny the GOAT of programming
