@@ -6,9 +6,17 @@ on:
       - 'v*'
   workflow_dispatch:
 
+# Add these permissions at the workflow level
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   build-windows:
     runs-on: windows-latest
+    # Add permissions for this job
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       
@@ -23,17 +31,20 @@ jobs:
           pip install pygame pyinstaller
           
       - name: Build with PyInstaller
-        run: pyinstaller --name "GolfGame" --onefile --windowed --noconsole src/main.py
-        shell: cmd
+        run: |
+          pyinstaller --name "GolfGame" --onefile --windowed --noconsole src/main.py
           
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: GolfGame-Windows
           path: dist/GolfGame.exe
+          retention-days: 1  # Only keep for 1 day since we'll release immediately
           
   build-linux:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       
@@ -42,51 +53,72 @@ jobs:
         with:
           python-version: '3.9'
           
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libsdl2-mixer-2.0-0 libsdl2-image-2.0-0 libsdl2-ttf-2.0-0
+          
+      - name: Install Python dependencies
+        run: |
           python -m pip install --upgrade pip
           pip install pygame pyinstaller
           
       - name: Build with PyInstaller
-        run: pyinstaller --name "GolfGame" --onefile src/main.py
+        run: |
+          pyinstaller --name "GolfGame" --onefile src/main.py
           
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
           name: GolfGame-Linux
           path: dist/GolfGame
+          retention-days: 1
           
   release:
     needs: [build-windows, build-linux]
     runs-on: ubuntu-latest
+    # Explicit permissions for release job
+    permissions:
+      contents: write
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Download Windows build
         uses: actions/download-artifact@v4
         with:
           name: GolfGame-Windows
+          path: ./release
           
       - name: Download Linux build
         uses: actions/download-artifact@v4
         with:
           name: GolfGame-Linux
+          path: ./release
           
+      - name: List files
+        run: ls -la ./release/
+        
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            GolfGame.exe
-            GolfGame
+            ./release/GolfGame.exe
+            ./release/GolfGame
           name: Release ${{ github.ref_name }}
           body: |
             ## 🎮 Golf Game ${{ github.ref_name }}
             
+            ### What's New:
+            - Check the [changelog](CHANGELOG.md) for details
+            
             ### Installation:
             - **Windows**: Download `GolfGame.exe` and run it
             - **Linux**: Download `GolfGame` and run `chmod +x GolfGame && ./GolfGame`
+            
+            ### System Requirements:
+            - Windows 10/11 or Linux with X11
+            - No additional software required - everything is bundled!
           draft: false
           prerelease: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
