@@ -65,7 +65,7 @@ jobs:
           
       - name: Build with PyInstaller
         run: |
-          pyinstaller --name "GolfGame" --onefile --add-data "src/ball.py;." --add-data "src/wall.py;." src/main.py
+          pyinstaller --name "GolfGame" --onefile --add-data "src/ball.py:." --add-data "src/wall.py:." src/main.py
           
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
