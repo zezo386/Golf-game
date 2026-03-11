@@ -51,10 +51,7 @@ jobs:
           
       - name: Build with PyInstaller
         run: |
-          pyinstaller --name "GolfGame" \
-                      --onefile \
-                      --add-data "src/assets/my-mom-is-kinda-homeless.mp3:assets" \
-                      src/main.py
+          pyinstaller --name "GolfGame" --onefile src/main.py
           
       - name: Upload artifact
         uses: actions/upload-artifact@v4
