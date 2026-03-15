@@ -1,55 +1,55 @@
-# Golf game
-This is a golf game made using python pygame that contains 10 levels
+# Adapt website
+a website for Adapt which is a youth lead civil work community for teenagers from 13 to 18 in Egypt
+## main pages
+This project contains many pages including
+### 1- main page
+this page contains the about, contact, committee description and much more that make you understand what Adapt is, its design is inspired by the main page for hackclub
+### 2- events page
+this page contains all the events that we did and you can filter them by location, time, tags or just filter by name or description of the event from a real database connected to an api that will be explained down later
+### 3- login/register page
+these are the sign in and sign up for this website, it includes a database of users and admins, if you want to login as a user try just sign up for being an admin you can login using this account
 
-# Mechanics
-This game contains many unique mechanics including
+username: ziad_elhusiny
 
-1- Level system that contains 10 main levels
+password: 12345678
 
-2- Drag to aim the golf ball
+this account is a temporary admin so it will be removed once the testing is finished
 
-3- Walls that are set at angles
+### 4- dashboard
+this page is a dashboard that contains the users tasks according to his committee and his committee news that automatically remove themselves when their end date comes
+#### admin dashboard:
+this is a part of the dashboard only visible to admins
 
-# How to Play
-## controls
-1- click and drag left mouse button to aim the ball
+it contains parts to add or remove tasks and news
 
-2- release the mouse to make the ball move
+## technology used
+used a navbar for better navigation in the website in all pages
+### events page
+in the events page I used python to make an API using FastAPI that uses SQLite3 and has databases for the events as the back end, I also used JS as the front end and added the filtering system using it
+### login/register pages
+in these pages i used python to make the API and connected it to SQLite3 database, I also used jwt tokens for logging out automatically after 30 minutes like other platforms, I also made a verification system for these jwt tokens and before every request these jwt tokens are requested from local storage
+### dashboard
+in the dashboard i used the same api for the login/register and put new tables that contain the news and tasks and every user finished tasks and added endpoints for adding and removing news and tasks as an admin
 
-3- click space or r to reset the level
+every post and patch request also use api keys that are stored in the database
 
-4- click n to go to next level if you completed the current level
+the example for everyone to try is "1"
 
-5- click 1 to go to the first level
+## features
+the front end is made using HTML, CSS, vanilla JS, I also used google fonts and font awesome icons and deployed on github on this link
 
-6- click esc to exit the game
+https://zezo386.github.io/events-api/
 
-## tips
-1- balls have drag so they lose speed eventually 
+the back end is made using python FastAPI, SQLite3, JWT and deployed on railway on this link
 
-2- walls have elasticity and the ball loses speed by hitting them
+https://events-api-production-4a05.up.railway.app/docs#/
+## setup
+Clone the repository
+    bash
 
-3- aim the ball to the black hole to win
-# Requirments
-python 3.9
-
-pygame 2.5.2
-
-# Clone the repository
-git clone https://github.com/zezo386/Golf-game.git
-cd pygame-golf
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the game
-python src/main.py
+    git clone <https://github.com/zezo386/events-api>
+    cd adapt
 
 # Contributes
 
 Made by Ziad Elhusiny the GOAT of programming
-
-### cheat code
-press 9 to go to the 9th level
-
-do not tell any one
